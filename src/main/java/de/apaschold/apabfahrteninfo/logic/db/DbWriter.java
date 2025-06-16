@@ -1,4 +1,6 @@
-package de.apaschold.apabfahrteninfo.logic;
+package de.apaschold.apabfahrteninfo.logic.db;
+
+import de.apaschold.apabfahrteninfo.logic.filehandling.TextFileManager;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -59,11 +61,11 @@ public class DbWriter {
             if (connection != null) {
                 //updateAgenciesData(connection);
                 //updateRoutesData(connection);
-                //updateStopsData(connection);
+                updateStopsData(connection);
                 //updateTransfersData(connection);
-                //updateTripsData(connection);
+                updateTripsData(connection);
                 //updateStopTimesData(connection);
-                updateCalenderDatesData(connection);
+                //updateCalenderDatesData(connection);
             } else {
                 System.err.println("Failed to establish a database connection.");
             }
@@ -83,13 +85,12 @@ public class DbWriter {
     private void updateAgenciesData(Connection connection){
         clearTable(connection,AGENCIES_DB_TABLE);
 
-        List<String> agenciesData = TxtFileManager.getInstance().readTxtFile(AGENCIES_FILE_NAME);
+        List<String> agenciesData = TextFileManager.getInstance().readTextFile(AGENCIES_FILE_NAME);
         System.out.println("Agencies data size: " + agenciesData.size());
-        int rowsAffected = 0;
 
+        int rowsAffected = 0;
         LocalTime startTime = LocalTime.now();
 
-        //skips header line of the txt file
         for (int index = 1; index < agenciesData.size(); index++){
             String[] agencyDataParts = agenciesData.get(index).split(",");
 
@@ -126,13 +127,12 @@ public class DbWriter {
     private void updateRoutesData(Connection connection) {
         clearTable(connection, ROUTES_DB_TABLE);
 
-        List<String> routesData = TxtFileManager.getInstance().readTxtFile(ROUTES_FILE_NAME);
+        List<String> routesData = TextFileManager.getInstance().readTextFile(ROUTES_FILE_NAME);
         System.out.println("Routes data size: " + routesData.size());
-        int rowsAffected = 0;
 
+        int rowsAffected = 0;
         LocalTime startTime = LocalTime.now();
 
-        // Skips header line of the txt file
         for (int index = 1; index < routesData.size(); index++) {
             String[] routeDataParts = routesData.get(index).split(",");
 
@@ -167,13 +167,12 @@ public class DbWriter {
     private void updateStopsData(Connection connection) {
         clearTable(connection, STOPS_DB_TABLE);
 
-        List<String> stopsData = TxtFileManager.getInstance().readTxtFile(STOPS_FILE_NAME);
+        List<String> stopsData = TextFileManager.getInstance().readTextFile(STOPS_FILE_NAME);
         System.out.println("Stops data size: " + stopsData.size());
-        int rowsAffected = 0;
 
+        int rowsAffected = 0;
         LocalTime startTime = LocalTime.now();
 
-        // Skips header line of the txt file
         for (int index = 1; index < stopsData.size(); index++) {
             String[] stopDataParts = stopsData.get(index).split(",");
 
@@ -191,7 +190,7 @@ public class DbWriter {
                     preparedStatement.setString(4, stopDataParts[3]); // longitude
                 } else {
                     preparedStatement.setString(2,
-                            stopDataParts[1].replace("\"", "") + ", " + stopDataParts[2].replace("\"", "") ); // name
+                            stopDataParts[1].replace("\"", "") + "," + stopDataParts[2].replace("\"", "") ); // name
                     preparedStatement.setString(3, stopDataParts[3]); // latitude
                     preparedStatement.setString(4, stopDataParts[4]); // longitude
                 }
@@ -210,16 +209,22 @@ public class DbWriter {
         System.out.println("Total rows affected in " + STOPS_DB_TABLE + ": " + rowsAffected);
     }
 
+    /**
+     * Reads the transfer data from a text file and inserts it into the database.
+     * The text file should be formatted with each line containing stop data separated by commas.
+     * The first line is expected to be a header and will be skipped.
+     *
+     * @param connection the database connection to use for inserting data
+     */
     private void updateTransfersData(Connection connection) {
         clearTable(connection, TRANSFERS_DB_TABLE);
 
-        List<String> transfersData = TxtFileManager.getInstance().readTxtFile(TRANSFER_FILE_NAME);
+        List<String> transfersData = TextFileManager.getInstance().readTextFile(TRANSFER_FILE_NAME);
         System.out.println("Transfers data size: " + transfersData.size());
-        int rowsAffected = 0;
 
+        int rowsAffected = 0;
         LocalTime startTime = LocalTime.now();
 
-        // Skips header line of the txt file
         for (int index = 1; index < transfersData.size(); index++) {
             String[] transferDataParts = transfersData.get(index).split(",");
 
@@ -251,16 +256,22 @@ public class DbWriter {
         System.out.println("Total rows affected in " + TRANSFERS_DB_TABLE + ": " + rowsAffected);
     }
 
+    /**
+     * Reads the trips data from a text file and inserts it into the database.
+     * The text file should be formatted with each line containing stop data separated by commas.
+     * The first line is expected to be a header and will be skipped.
+     *
+     * @param connection the database connection to use for inserting data
+     */
     private void updateTripsData(Connection connection) {
         clearTable(connection, TRIPS_DB_TABLE);
 
-        List<String> tripsData = TxtFileManager.getInstance().readTxtFile(TRIP_FILE_NAME);
+        List<String> tripsData = TextFileManager.getInstance().readTextFile(TRIP_FILE_NAME);
         System.out.println("Trips data size: " + tripsData.size());
-        int rowsAffected = 0;
 
+        int rowsAffected = 0;
         LocalTime startTime = LocalTime.now();
 
-        // Skips header line of the txt file
         for (int index = 1; index < tripsData.size(); index++) {
             String[] tripDataParts = tripsData.get(index).split(",");
 
@@ -268,9 +279,21 @@ public class DbWriter {
                 preparedStatement.setString(1, tripDataParts[0]); // routeId
                 preparedStatement.setString(2, tripDataParts[1]); // serviceId
                 preparedStatement.setString(3, tripDataParts[2]); // tripId
-                preparedStatement.setString(4, tripDataParts[3]); // tripHeadsign
-                preparedStatement.setString(5, tripDataParts[4]); // shortName
-                preparedStatement.setString(6, tripDataParts[5]); // directionId
+                /*
+                 * Some of the stops contain a comma in their name,
+                 * e.g. "Leipzig, Hauptbahnhof" or "Leipzig, Markkleeberg"
+                 * Then stopDataParts.length == 5 and "stop_name" is the second part and third index
+                 */
+                if (tripDataParts.length == 6) {
+                    preparedStatement.setString(4, tripDataParts[3]); // tripHeadsign
+                    preparedStatement.setString(5, tripDataParts[4]); // shortName
+                    preparedStatement.setString(6, tripDataParts[5]); // directionId
+                } else {
+                    preparedStatement.setString(4,
+                            tripDataParts[3].replace("\"", "") + "," + tripDataParts[4].replace("\"", "") ); // tripHeadsign
+                    preparedStatement.setString(5, tripDataParts[5]); // shortName
+                    preparedStatement.setString(6, tripDataParts[6]); // directionId
+                }
 
                 rowsAffected += preparedStatement.executeUpdate();
             } catch (Exception e) {
@@ -286,22 +309,29 @@ public class DbWriter {
         System.out.println("Total rows affected in " + TRIPS_DB_TABLE + ": " + rowsAffected);
     }
 
+    /**
+     * Reads the stoptimes data from a text file and inserts it into the database.
+     * The text file should be formatted with each line containing stop data separated by commas.
+     * The first line is expected to be a header and will be skipped.
+     *
+     * @param connection the database connection to use for inserting data
+     */
     private void updateStopTimesData(Connection connection) {
         clearTable(connection, STOP_TIMES_DB_TABLE);
 
-        List<String> stopTimesData = TxtFileManager.getInstance().readTxtFile(STOP_TIMES_FILE_NAME);
+        List<String> stopTimesData = TextFileManager.getInstance().readTextFile(STOP_TIMES_FILE_NAME);
         System.out.println("Stop times data size: " + stopTimesData.size());
 
         int rowsAffected = 0;
         LocalTime startTime = LocalTime.now();
-        // Skips header line of the txt file
+
         for (int index = 1; index < stopTimesData.size(); index++) {
             String[] stopTimeDataParts = stopTimesData.get(index).split(",");
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(STOP_TIMES_INSERT_STATEMENT)) {
                 preparedStatement.setString(1, stopTimeDataParts[0]); // tripId
-                preparedStatement.setString(2, stopTimeDataParts[1]); // arrivalTime
-                preparedStatement.setString(3, stopTimeDataParts[2]); // departureTime
+                preparedStatement.setString(2, stopTimeDataParts[1]); // arrivalDateTime
+                preparedStatement.setString(3, stopTimeDataParts[2]); // departureDateTime
                 preparedStatement.setString(4, stopTimeDataParts[3]); // stopId
                 preparedStatement.setString(5, stopTimeDataParts[4]); // stopSequence
                 preparedStatement.setString(6, stopTimeDataParts[5]); // pickupType
@@ -321,16 +351,22 @@ public class DbWriter {
         System.out.println("Total rows affected in " + STOP_TIMES_DB_TABLE + ": " + rowsAffected);
     }
 
+    /**
+     * Reads the stops data from a text file and inserts it into the database.
+     * The text file should be formatted with each line containing stop data separated by commas.
+     * The first line is expected to be a header and will be skipped.
+     *
+     * @param connection the database connection to use for inserting data
+     */
     private void updateCalenderDatesData(Connection connection) {
         clearTable(connection, CALENDAR_DATES_DB_TABLE);
 
-        List<String> calendarDatesData = TxtFileManager.getInstance().readTxtFile(CALENDER_DATES_FILE_NAME);
+        List<String> calendarDatesData = TextFileManager.getInstance().readTextFile(CALENDER_DATES_FILE_NAME);
         System.out.println("Calendar dates data size: " + calendarDatesData.size());
-        int rowsAffected = 0;
 
+        int rowsAffected = 0;
         LocalTime startTime = LocalTime.now();
 
-        // Skips header line of the txt file
         for (int index = 1; index < calendarDatesData.size(); index++) {
             String[] calendarDateDataParts = calendarDatesData.get(index).split(",");
 

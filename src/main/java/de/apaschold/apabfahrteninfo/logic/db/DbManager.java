@@ -1,4 +1,4 @@
-package de.apaschold.apabfahrteninfo.logic;
+package de.apaschold.apabfahrteninfo.logic.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,13 +8,13 @@ import java.sql.SQLNonTransientConnectionException;
 public class DbManager {
     //0. constants
     private static final String DB_LOCAL_SERVER_IP_ADDRESS = "localhost/";
-    private static final String DB_LOCAL_NAME = "public_transport_mdv";
+    private static final String DB_LOCAL_NAME = "fahrplan";
 
     private static final String DB_LOCAL_CONNECTION_URL =
-            "jdbc:mariadb://" + DB_LOCAL_SERVER_IP_ADDRESS + DB_LOCAL_NAME;
+            "jdbc:mysql://" + DB_LOCAL_SERVER_IP_ADDRESS + DB_LOCAL_NAME;
 
-    private static final String DB_LOCAL_USER_NAME = "root";
-    private static final String DB_LOCAL_USER_PW = "";
+    private static final String DB_LOCAL_USER_NAME = "java";
+    private static final String DB_LOCAL_USER_PW = "password";
     //endregion
 
     //1. attributes
@@ -27,7 +27,7 @@ public class DbManager {
     //endregion
 
     //3. getInstance Method
-    public static DbManager getInstance() {
+    public static synchronized DbManager getInstance() {
         if (instance == null) {
             instance = new DbManager();
         }

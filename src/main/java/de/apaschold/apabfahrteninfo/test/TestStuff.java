@@ -1,14 +1,16 @@
 package de.apaschold.apabfahrteninfo.test;
 
-import de.apaschold.apabfahrteninfo.logic.DbWriter;
-import de.apaschold.apabfahrteninfo.logic.TxtFileManager;
+import de.apaschold.apabfahrteninfo.logic.DepartureHandler;
+import de.apaschold.apabfahrteninfo.logic.db.DbReader;
+import de.apaschold.apabfahrteninfo.logic.db.DbWriter;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 public class TestStuff {
     public static void main(String[] args) {
-        DbWriter dbWriter = new DbWriter();
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime nownow = LocalDateTime.now();
 
-        dbWriter.updateAllTables();
+        System.out.println(nownow.isBefore(now));
     }
 }
