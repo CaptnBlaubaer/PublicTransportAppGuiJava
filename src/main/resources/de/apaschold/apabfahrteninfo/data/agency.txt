@@ -1,0 +1,29 @@
+agency_id,agency_name,agency_url,agency_timezone,agency_phone,agency_lang,agency_fare_url
+800413,800413,https://www.mdv.de/partner/,Europe/Berlin,0341/91353591,de,https://www.moovme.de/
+800445,800445,https://www.mdv.de/partner/,Europe/Berlin,0341/91353591,de,https://www.moovme.de/
+800456,800456,https://www.mdv.de/partner/,Europe/Berlin,0341/91353591,de,https://www.moovme.de/
+800486,800486,https://www.mdv.de/partner/,Europe/Berlin,0341/91353591,de,https://www.moovme.de/
+800489,800489,https://www.mdv.de/partner/,Europe/Berlin,0341/91353591,de,https://www.moovme.de/
+8004A9,8004A9,https://www.mdv.de/partner/,Europe/Berlin,0341/91353591,de,https://www.moovme.de/
+00010,Abellio Rail Mitteldeutschland GmbH,https://www.mdv.de/partner/,Europe/Berlin,0341/91353591,de,https://www.moovme.de/
+00628,Abellio Rail Mitteldeutschland GmbH,https://www.mdv.de/partner/,Europe/Berlin,0341/91353591,de,https://www.moovme.de/
+00674,Abellio Rail Mitteldeutschland GmbH,https://www.mdv.de/partner/,Europe/Berlin,0341/91353591,de,https://www.moovme.de/
+00748,Abellio Rail Mitteldeutschland GmbH,https://www.mdv.de/partner/,Europe/Berlin,0341/91353591,de,https://www.moovme.de/
+00181,DB Regio AG Nordost,https://www.mdv.de/partner/,Europe/Berlin,0341/91353591,de,https://www.moovme.de/
+00184,DB Regio AG Südost,https://www.mdv.de/partner/,Europe/Berlin,0341/91353591,de,https://www.moovme.de/
+00624,Erfurter Bahn GmbH,https://www.mdv.de/partner/,Europe/Berlin,0341/91353591,de,https://www.moovme.de/
+00670,Erfurter Bahn GmbH,https://www.mdv.de/partner/,Europe/Berlin,0341/91353591,de,https://www.moovme.de/
+00333,Hallesche Verkehrs-AG,https://www.mdv.de/partner/,Europe/Berlin,0341/91353591,de,https://www.moovme.de/
+00473,Leipziger Verkehrsbetriebe,https://www.mdv.de/partner/,Europe/Berlin,0341/91353591,de,https://www.moovme.de/
+00503,Mitteldeutsche Regiobahn,https://www.mdv.de/partner/,Europe/Berlin,0341/91353591,de,https://www.moovme.de/
+00631,Mitteldeutsche Regiobahn,https://www.mdv.de/partner/,Europe/Berlin,0341/91353591,de,https://www.moovme.de/
+00677,Mitteldeutsche Regiobahn,https://www.mdv.de/partner/,Europe/Berlin,0341/91353591,de,https://www.moovme.de/
+00533,NSB Naumburger Straßenbahn,https://www.mdv.de/partner/,Europe/Berlin,0341/91353591,de,https://www.moovme.de/
+00555,Nordsachsen Mobil,https://www.mdv.de/partner/,Europe/Berlin,0341/91353591,de,https://www.moovme.de/
+00538,Omnibusbetrieb Saalekreis,https://www.mdv.de/partner/,Europe/Berlin,0341/91353591,de,https://www.moovme.de/
+00602,PNVG Merseburg-Querfurt,https://www.mdv.de/partner/,Europe/Berlin,0341/91353591,de,https://www.moovme.de/
+00092,PVG Burgenlandkreis,https://www.mdv.de/partner/,Europe/Berlin,0341/91353591,de,https://www.moovme.de/
+00663,Regiobus Mittelsachsen,https://www.mdv.de/partner/,Europe/Berlin,0341/91353591,de,https://www.moovme.de/
+00710,Regionalbus Leipzig GmbH,https://www.mdv.de/partner/,Europe/Berlin,0341/91353591,de,https://www.moovme.de/
+00724,Regionalverkehre Start Deutschland GmbH Mitteldeutschland,https://www.mdv.de/partner/,Europe/Berlin,0341/91353591,de,https://www.moovme.de/
+00899,THÜSAC,https://www.mdv.de/partner/,Europe/Berlin,0341/91353591,de,https://www.moovme.de/
