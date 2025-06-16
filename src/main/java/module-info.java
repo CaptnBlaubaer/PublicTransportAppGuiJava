@@ -13,4 +13,6 @@ module de.apaschold.apabfahrteninfo {
     opens de.apaschold.apabfahrteninfo.ui.frequentlyusedstops to javafx.fxml;
     exports de.apaschold.apabfahrteninfo.ui;
     opens de.apaschold.apabfahrteninfo.ui to javafx.fxml;
+    exports de.apaschold.apabfahrteninfo.ui.directroutesearch;
+    opens de.apaschold.apabfahrteninfo.ui.directroutesearch to javafx.fxml;
 }

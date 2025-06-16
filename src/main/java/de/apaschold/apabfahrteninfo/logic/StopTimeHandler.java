@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DepartureHandler {
+public class StopTimeHandler {
     //0. constants
     //endregion
 
@@ -15,7 +15,7 @@ public class DepartureHandler {
     //endregion
 
     //2. constructor
-    public DepartureHandler (){
+    public StopTimeHandler(){
     }
     //endregion
 
@@ -34,7 +34,7 @@ public class DepartureHandler {
 
         //Liste enthält auch Endhalte, diese haben aber keine Abfahrt sondern nur Ankunft
         for(StopTime stopTime : allStopTimes){
-            if(!stopTime.endStop().equals(stopName)){
+            if(!stopTime.direction().equals(stopName)){
                 allDepartures.add(stopTime);
             }
         }
@@ -45,17 +45,13 @@ public class DepartureHandler {
     }
 
     private List<StopTime> departuresInTheNextHour(List<StopTime> departures, LocalDateTime chosenDateTime) {
-        List<StopTime> departuresInFuture = new ArrayList<>();
+
 
         LocalDateTime oneHourLater = chosenDateTime.plusHours(1);
 
-        for(StopTime departure : departures){
-            if(departure.departureDateTime().isAfter(chosenDateTime)
-                && departure.departureDateTime().isBefore(oneHourLater)){
-                departuresInFuture.add(departure);
-            }
-        }
-
-        return departuresInFuture;
+        return departures.stream()
+                .filter(stopTime -> stopTime.departureDateTime().isAfter(chosenDateTime)
+                        && stopTime.departureDateTime().isBefore(oneHourLater))
+                .toList();
     }
 }

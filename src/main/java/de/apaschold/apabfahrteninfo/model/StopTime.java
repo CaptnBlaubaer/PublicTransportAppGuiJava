@@ -3,10 +3,10 @@ package de.apaschold.apabfahrteninfo.model;
 import java.time.LocalDateTime;
 
 public record StopTime(String routeNumber,
-                       String endStop,
+                       String direction,
                        LocalDateTime arrivalDateTime,
                        LocalDateTime departureDateTime) implements Comparable<StopTime> {
-    //0. attirbute
+    //0. constants
     private static final String STRING_REPRESENTATION = "%s, %s: %s";
     //endregion
 
@@ -14,7 +14,7 @@ public record StopTime(String routeNumber,
     public String arrivalAsString(){
         return String.format(STRING_REPRESENTATION,
                 routeNumber,
-                endStop,
+                direction,
                 arrivalDateTime.toLocalTime()
         );
     }
@@ -22,7 +22,7 @@ public record StopTime(String routeNumber,
     public String departureAsString(){
         return String.format(STRING_REPRESENTATION,
                 routeNumber,
-                endStop,
+                direction,
                 departureDateTime.toLocalTime()
         );
     }

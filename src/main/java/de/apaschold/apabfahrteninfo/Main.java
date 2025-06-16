@@ -12,7 +12,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         GuiController.getInstance().setMainStage(stage);
-        GuiController.getInstance().openFrequentlySearchedStops();
+        GuiController.getInstance().openDirectRouteSearch();
 
     }
 

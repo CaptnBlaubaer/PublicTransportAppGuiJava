@@ -80,6 +80,19 @@ public class GuiController {
             System.err.println("Error loading single stop search view: " + e.getMessage());
             e.printStackTrace();
         }
+    }
 
+    public void openDirectRouteSearch(){
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("direct-route-search-layout.fxml"));
+
+        try{
+            Scene scene = new Scene(fxmlLoader.load(), 900, 500);
+            this.mainStage.setTitle("Fahrplan App - Haltestelle suchen");
+            this.mainStage.setScene(scene);
+            this.mainStage.show();
+        } catch (Exception e) {
+            System.err.println("Error loading single stop search view: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }

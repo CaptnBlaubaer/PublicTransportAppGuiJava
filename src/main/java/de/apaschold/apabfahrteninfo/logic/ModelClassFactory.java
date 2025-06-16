@@ -1,5 +1,6 @@
 package de.apaschold.apabfahrteninfo.logic;
 
+import de.apaschold.apabfahrteninfo.model.Route;
 import de.apaschold.apabfahrteninfo.model.StopTime;
 
 import java.sql.ResultSet;
@@ -8,7 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-public class DepartureFactory {
+public class ModelClassFactory {
     //0. constants
     //endregion
 
@@ -16,13 +17,13 @@ public class DepartureFactory {
     //endregion
     
     //2. contructor
-    private DepartureFactory(){}
+    private ModelClassFactory(){}
     //endregion
     
     //3. Factory method
-    public static StopTime getRepartureFromResultSet(LocalDate date, ResultSet resultSet) throws SQLException {
+    public static StopTime getStopTimeFromResultSet(LocalDate date, ResultSet resultSet) throws SQLException {
         String routeNumber = resultSet.getString(1);
-        String endStop = resultSet.getString(2);
+        String direction = resultSet.getString(2);
         String arrivalTimeAsString = resultSet.getString(3);
         String departureTimeAsString = resultSet.getString(4);
 
@@ -31,7 +32,26 @@ public class DepartureFactory {
 
         return new StopTime(
                 routeNumber,
+                direction,
+                arrivalDateTime,
+                departureDateTime
+        );
+    }
+
+    public static Route getRouteFromResultSet(LocalDate date, ResultSet resultSet, String departureName, String arrivalName) throws SQLException {
+        String routeNumber = resultSet.getString(1);
+        String endStop = resultSet.getString(2);
+        String arrivalTimeAsString = resultSet.getString(3);
+        String departureTimeAsString = resultSet.getString(4);
+
+        LocalDateTime arrivalDateTime = generateDateTime(date, arrivalTimeAsString);
+        LocalDateTime departureDateTime = generateDateTime(date, departureTimeAsString);
+
+        return new Route(
+                routeNumber,
                 endStop,
+                departureName,
+                arrivalName,
                 arrivalDateTime,
                 departureDateTime
         );

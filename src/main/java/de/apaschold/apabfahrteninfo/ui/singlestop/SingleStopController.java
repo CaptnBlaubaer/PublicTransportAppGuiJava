@@ -1,10 +1,11 @@
 package de.apaschold.apabfahrteninfo.ui.singlestop;
 
-import de.apaschold.apabfahrteninfo.logic.DepartureHandler;
+import de.apaschold.apabfahrteninfo.logic.StopTimeHandler;
 import de.apaschold.apabfahrteninfo.logic.db.DbReader;
 import de.apaschold.apabfahrteninfo.logic.filehandling.TextFileManager;
 import de.apaschold.apabfahrteninfo.model.StopTime;
 import de.apaschold.apabfahrteninfo.texts.AppTexts;
+import de.apaschold.apabfahrteninfo.ui.GuiController;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -23,7 +24,7 @@ public class SingleStopController implements Initializable {
     //endregion
 
     //1. attributes
-    private final DepartureHandler departureHandler = new DepartureHandler();
+    private final StopTimeHandler stopTimeHandler = new StopTimeHandler();
     private List<String> availableStops;
     //endregion
 
@@ -63,6 +64,12 @@ public class SingleStopController implements Initializable {
 
         List<Integer> minutes = IntStream.range(0, 60).boxed().toList();
         this.selectedMinute.getItems().setAll(minutes);
+
+        String recentlyUsedStopSelected = GuiController.getInstance().getRecentlyUsedStop();
+        if (recentlyUsedStopSelected != null) {
+            this.searchBarForStops.setText(recentlyUsedStopSelected);
+            showNextStopTimes();
+        }
     }
     //endregion
 
@@ -70,11 +77,7 @@ public class SingleStopController implements Initializable {
     @FXML
     private void showNextStopTimes() {
         if (!this.searchBarForStops.getText().isBlank()) {
-            if (this.selectedDate.getValue() == null
-                    || this.selectedHour.getValue() == null
-                    || this.selectedMinute.getValue() == null) {
-                setNow();
-            }
+            checkIfDateTimeIsChosen();
 
             LocalDateTime chosenDateTime = LocalDateTime.of(
                     this.selectedDate.getValue(),
@@ -87,7 +90,12 @@ public class SingleStopController implements Initializable {
              */
             if (LocalDateTime.now().minusSeconds(59).isBefore(chosenDateTime)) {
                 String selectedStop = this.stopSuggestions.getSelectionModel().getSelectedItem();
-                this.searchBarForStops.setText(selectedStop);
+
+                if (selectedStop != null) {
+                    this.searchBarForStops.setText(selectedStop);
+                } else {
+                    selectedStop = this.searchBarForStops.getText();
+                }
 
                 List<StopTime> stopTimesFromDb = arrivalOrDepartures(selectedStop, chosenDateTime);
 
@@ -122,16 +130,29 @@ public class SingleStopController implements Initializable {
         this.selectedHour.setValue(LocalTime.now().getHour());
         this.selectedMinute.setValue(LocalTime.now().getMinute());
     }
+
+    @FXML
+    private void goToDirectRouteSearch(){
+        GuiController.getInstance().openDirectRouteSearch();
+    }
     //endregion
+
+    private void checkIfDateTimeIsChosen() {
+        if (this.selectedDate.getValue() == null
+                || this.selectedHour.getValue() == null
+                || this.selectedMinute.getValue() == null) {
+            setNow();
+        }
+    }
 
     private List<StopTime> arrivalOrDepartures(String stopName, LocalDateTime chosenDateTime) {
         List<StopTime> stopTimes = null;
         if (searchForDepartures.isSelected()){
-            stopTimes = this.departureHandler.getAllDepartures(stopName, chosenDateTime);
+            stopTimes = this.stopTimeHandler.getAllDepartures(stopName, chosenDateTime);
 
             this.nextStopTimes.setCellFactory(param -> new DepartureTimeListViewCell());
         } else if (searchForArrivals.isSelected()){
-            stopTimes = this.departureHandler.getAllStopTimes(stopName, chosenDateTime);
+            stopTimes = this.stopTimeHandler.getAllStopTimes(stopName, chosenDateTime);
 
             this.nextStopTimes.setCellFactory(param -> new ArrivalTimeListViewCell());
         }
@@ -146,7 +167,6 @@ public class SingleStopController implements Initializable {
         alert.setContentText(AppTexts.ALERT_DEPRECATED_DATE_TIME_CONTENT);
         alert.show();
     }
-
 
     private void showAlertMessageStopNameIsBlank() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
