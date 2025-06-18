@@ -14,29 +14,41 @@ public class RouteHandler {
     //endregion
 
     //2. constructor
-    public RouteHandler() {
+    private RouteHandler() {
         // Constructor logic if needed
     }
     //endregion
 
     //3. operating methods
-    public void findRoutes() {
-        String departureName = "Halle (Saale), Landesmuseum für Vorgeschichte";
-        String arrivalName = "Halle (Saale), Hauptbahnhof (Tram/Bus)";
-        LocalDateTime now = LocalDateTime.parse("2025-06-17T08:00:00");
+    public static List<Route> findRoutes(String departureName, String arrivalName, LocalDateTime chosenDateTime, boolean isDepartureSearch) {
 
-        List<Route> foundRoutes = DbReader.getDirectRouteForDate(departureName, arrivalName, now);
+        List<Route> foundRoutes = DbReader.getDirectRouteForDate(departureName, arrivalName, chosenDateTime);
 
-        List<Route> foundRoutesInNextHour = routesInTheNextHour(foundRoutes, now);
+        List<Route> routesInNextHour;
 
-        foundRoutesInNextHour.forEach(System.out::println);
+        if (isDepartureSearch){
+            routesInNextHour = routesByDepartureInTheNextHour(foundRoutes, chosenDateTime);
+        } else {
+            routesInNextHour = routesByArrivalInTheNextHour(foundRoutes, chosenDateTime);
+        }
+
+        return routesInNextHour;
     }
 
-    private List<Route> routesInTheNextHour(List<Route> foundRoutes, LocalDateTime now) {
-        LocalDateTime oneHourLater = now.plusHours(1);
+    private static List<Route> routesByArrivalInTheNextHour(List<Route> foundRoutes, LocalDateTime chosenDateTime) {
+        LocalDateTime oneHourLater = chosenDateTime.plusHours(1);
 
         return foundRoutes.stream()
-                .filter(route -> route.departureDateTime().isAfter(now)
+                .filter(route -> route.arrivalDateTime().isAfter(chosenDateTime)
+                        && route.arrivalDateTime().isBefore(oneHourLater))
+                .toList();
+    }
+
+    private static List<Route> routesByDepartureInTheNextHour(List<Route> foundRoutes, LocalDateTime chosenDateTime) {
+        LocalDateTime oneHourLater = chosenDateTime.plusHours(1);
+
+        return foundRoutes.stream()
+                .filter(route -> route.departureDateTime().isAfter(chosenDateTime)
                         && route.departureDateTime().isBefore(oneHourLater))
                 .toList();
     }

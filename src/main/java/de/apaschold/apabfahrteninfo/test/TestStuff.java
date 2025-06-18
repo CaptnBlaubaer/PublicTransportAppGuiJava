@@ -5,6 +5,6 @@ import de.apaschold.apabfahrteninfo.logic.db.DbReader;
 
 public class TestStuff {
     public static void main(String[] args) {
-        new RouteHandler().findRoutes();
+        //RouteHandler.findRoutes();
     }
 }

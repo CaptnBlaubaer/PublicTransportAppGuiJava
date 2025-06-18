@@ -62,7 +62,7 @@ public class TextFileManager {
     }
 
     public void updateRecentlyUsedStopsCsv(String selectedStopName){
-        List<String> recentlyUsedStops = GuiController.getInstance().getFrequentlyUsedStops();
+        List<String> recentlyUsedStops = GuiController.getInstance().getRecentlyUsedStops();
 
         if(!recentlyUsedStops.contains(selectedStopName)) {
             recentlyUsedStops.add(0, selectedStopName);

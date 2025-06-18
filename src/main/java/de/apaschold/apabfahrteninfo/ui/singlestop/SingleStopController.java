@@ -14,7 +14,6 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.IntStream;
@@ -77,12 +76,7 @@ public class SingleStopController implements Initializable {
     @FXML
     private void showNextStopTimes() {
         if (!this.searchBarForStops.getText().isBlank()) {
-            checkIfDateTimeIsChosen();
-
-            LocalDateTime chosenDateTime = LocalDateTime.of(
-                    this.selectedDate.getValue(),
-                    LocalTime.of(this.selectedHour.getValue(), this.selectedMinute.getValue())
-            );
+            LocalDateTime chosenDateTime = getChosenDateTime();
 
             /*
              * chosenDateTime shall be similar or equal to now DateTime
@@ -111,15 +105,12 @@ public class SingleStopController implements Initializable {
     }
 
     @FXML
-    private void suggestStops() {
-        List<String> suggestedStops = new ArrayList<>();
+    private void showStopSuggestions() {
         String stopNameFragment = this.searchBarForStops.getText().toLowerCase();
 
-        for (String stopName : this.availableStops) {
-            if (stopName.toLowerCase().contains(stopNameFragment)) {
-                suggestedStops.add(stopName);
-            }
-        }
+        List<String> suggestedStops = this.availableStops.stream()
+                .filter(stop -> stop.toLowerCase().contains(stopNameFragment))
+                .toList();
 
         this.stopSuggestions.getItems().setAll(suggestedStops);
     }
@@ -137,12 +128,16 @@ public class SingleStopController implements Initializable {
     }
     //endregion
 
-    private void checkIfDateTimeIsChosen() {
+    private LocalDateTime getChosenDateTime() {
         if (this.selectedDate.getValue() == null
                 || this.selectedHour.getValue() == null
                 || this.selectedMinute.getValue() == null) {
             setNow();
         }
+
+        return LocalDateTime.of(
+                this.selectedDate.getValue(),
+                LocalTime.of(this.selectedHour.getValue(), this.selectedMinute.getValue()));
     }
 
     private List<StopTime> arrivalOrDepartures(String stopName, LocalDateTime chosenDateTime) {

@@ -14,7 +14,7 @@ public class GuiController {
     //1. attributes
     private static GuiController instance;
     private Stage mainStage;
-    private List<String> frequentlyUsedStops;
+    private List<String> recentlyUsedStops;
     private String recentlyUsedStop;
     //endregion
 
@@ -32,12 +32,12 @@ public class GuiController {
     //endregion
 
     //4. getter and setter methods
-    public List<String> getFrequentlyUsedStops() {
-        return frequentlyUsedStops;
+    public List<String> getRecentlyUsedStops() {
+        return recentlyUsedStops;
     }
 
-    public void setFrequentlyUsedStops(List<String> frequentlyUsedStops) {
-        this.frequentlyUsedStops = frequentlyUsedStops;
+    public void setRecentlyUsedStops(List<String> recentlyUsedStops) {
+        this.recentlyUsedStops = recentlyUsedStops;
     }
 
     public String getRecentlyUsedStop() {
@@ -54,7 +54,7 @@ public class GuiController {
         this.mainStage = mainStage;
     }
 
-    public void openFrequentlySearchedStops(){
+    public void openRecentlySearchedStops(){
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("recently-used-stops-layout.fxml"));
 
         try{
@@ -86,12 +86,12 @@ public class GuiController {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("direct-route-search-layout.fxml"));
 
         try{
-            Scene scene = new Scene(fxmlLoader.load(), 900, 500);
-            this.mainStage.setTitle("Fahrplan App - Haltestelle suchen");
+            Scene scene = new Scene(fxmlLoader.load(), 900, 550);
+            this.mainStage.setTitle("Fahrplan App - Routenplaner");
             this.mainStage.setScene(scene);
             this.mainStage.show();
         } catch (Exception e) {
-            System.err.println("Error loading single stop search view: " + e.getMessage());
+            System.err.println("Error loading route search view: " + e.getMessage());
             e.printStackTrace();
         }
     }

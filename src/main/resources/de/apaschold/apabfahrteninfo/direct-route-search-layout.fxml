@@ -12,20 +12,86 @@
       alignment="CENTER"
       spacing="10.0">
     <children>
+        <Label text="Verbindung auswählen"
+               style="-fx-font-size: 14; -fx-font-weight: bold;"/>
         <HBox alignment="CENTER"
               spacing="20.0">
             <children>
                 <VBox alignment="TOP_CENTER"
                       prefWidth="400.0"
-                      spacing="20.0">
+                      spacing="10.0">
                     <children>
-                        <TextField/>
-                        <TextField/>
+                        <VBox>
+                            <children>
+                                <Label text="Abfahrt:"/>
+                                <TextField fx:id="departureStop"
+                                           onKeyTyped="#setDepartureStopSearch"
+                                           promptText="Haltestelle auswählen"
+                                           focusTraversable="true"/>
+                            </children>
+                        </VBox>
+                        <VBox>
+                            <children>
+                                <Label text="Ankunft:"/>
+                                <TextField fx:id="arrivalStop"
+                                           onKeyTyped="#setArrivalStopSearch"
+                                           promptText="Haltestelle auswählen"/>
+                            </children>
+                        </VBox>
+
+                        <Label text="Ankunfts-/Abfahrtszeit auswählen"
+                               style="-fx-font-weight: bold; -fx-font-size: 14;"/>
+
+                        <HBox alignment="CENTER"
+                              spacing="20.0">
+                            <children>
+                                <Button text="Demnächst"
+                                        prefHeight="20.0"
+                                        onAction="#setNow"/>
+
+                                <fx:define>
+                                    <ToggleGroup fx:id="arrivalOrDeparture"/>
+                                </fx:define>
+
+                                <RadioButton fx:id="departureSearch"
+                                             text="Abfahrt"
+                                             selected="true"
+                                             onAction="#showNextRoutes"
+                                             toggleGroup="$arrivalOrDeparture"/>
+
+                                <RadioButton text="Ankunft"
+                                             onAction="#showNextRoutes"
+                                             toggleGroup="$arrivalOrDeparture"/>
+                            </children>
+                        </HBox>
+
+                        <HBox alignment="CENTER"
+                              spacing="10.0">
+                            <children>
+                                <Label text="Tag:"/>
+                                <DatePicker fx:id="selectedDate"
+                                            prefWidth="100.0"/>
+                                <Label text="HH:"/>
+                                <ComboBox fx:id="selectedHour"/>
+                                <Label text="MM"/>
+                                <ComboBox fx:id="selectedMinute"/>
+                            </children>
+                        </HBox>
                     </children>
                 </VBox>
-                <VBox></VBox>
+
+                <ListView fx:id="suggestedStops"
+                            onMouseClicked="#showNextRoutes"
+                          prefWidth="400.0"
+                          maxHeight="200.0"/>
             </children>
         </HBox>
+        <Label text="Gefundene Verbindungen: "
+               style="-fx-font-size: 14; -fx-font-weight: bold;"/>
+        <ListView fx:id="nextRoutes"
+                  prefWidth="900.0"
+                  maxHeight="200.0"/>
+
         <Button text="Zur Haltestellensuche"
                 onAction="#goToSingleStopSearch"
                 prefWidth="880.0"

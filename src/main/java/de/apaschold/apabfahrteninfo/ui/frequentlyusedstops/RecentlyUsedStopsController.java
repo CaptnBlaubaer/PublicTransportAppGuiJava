@@ -24,7 +24,7 @@ public class RecentlyUsedStopsController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         List<String> frequentlyUsedStops = TextFileManager.getInstance()
                 .readTextFile(TextFileManager.FILE_NAME_OFTEN_USED_STOP_NAMES);
-        GuiController.getInstance().setFrequentlyUsedStops(frequentlyUsedStops);
+        GuiController.getInstance().setRecentlyUsedStops(frequentlyUsedStops);
 
         recentlyUsedStops.getItems().setAll(frequentlyUsedStops);
     }

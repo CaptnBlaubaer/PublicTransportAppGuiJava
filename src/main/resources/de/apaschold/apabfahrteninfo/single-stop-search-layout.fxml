@@ -34,7 +34,7 @@
                             <TextField fx:id="searchBarForStops"
                                        prefHeight="40.0"
                                        maxWidth="380.0"
-                                       onKeyTyped="#suggestStops"
+                                       onKeyTyped="#showStopSuggestions"
                                        promptText="Haltestelle"
                                        focusTraversable="true"/>
 
