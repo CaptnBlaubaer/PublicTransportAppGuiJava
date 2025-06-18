@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
@@ -11,91 +8,93 @@
       fx:controller="de.apaschold.apabfahrteninfo.ui.directroutesearch.DirectRouteSearchController"
       alignment="CENTER"
       spacing="10.0">
-    <children>
-        <Label text="Verbindung auswählen"
-               style="-fx-font-size: 14; -fx-font-weight: bold;"/>
-        <HBox alignment="CENTER"
-              spacing="20.0">
-            <children>
-                <VBox alignment="TOP_CENTER"
-                      prefWidth="400.0"
-                      spacing="10.0">
-                    <children>
-                        <VBox>
-                            <children>
-                                <Label text="Abfahrt:"/>
-                                <TextField fx:id="departureStop"
-                                           onKeyTyped="#setDepartureStopSearch"
-                                           promptText="Haltestelle auswählen"
-                                           focusTraversable="true"/>
-                            </children>
-                        </VBox>
-                        <VBox>
-                            <children>
-                                <Label text="Ankunft:"/>
-                                <TextField fx:id="arrivalStop"
-                                           onKeyTyped="#setArrivalStopSearch"
-                                           promptText="Haltestelle auswählen"/>
-                            </children>
-                        </VBox>
 
-                        <Label text="Ankunfts-/Abfahrtszeit auswählen"
-                               style="-fx-font-weight: bold; -fx-font-size: 14;"/>
+    <Label text="Verbindung auswählen"
+           style="-fx-font-size: 14; -fx-font-weight: bold;"/>
+    <HBox alignment="CENTER"
+          spacing="20.0">
+        <VBox alignment="TOP_CENTER"
+              prefWidth="350.0"
+              spacing="10.0">
+            <VBox>
+                <Label text="Abfahrt:"/>
 
-                        <HBox alignment="CENTER"
-                              spacing="20.0">
-                            <children>
-                                <Button text="Demnächst"
-                                        prefHeight="20.0"
-                                        onAction="#setNow"/>
+                <TextField fx:id="departureStop"
+                           onKeyTyped="#setDepartureStopSearch"
+                           promptText="Haltestelle auswählen"/>
+            </VBox>
 
-                                <fx:define>
-                                    <ToggleGroup fx:id="arrivalOrDeparture"/>
-                                </fx:define>
+            <VBox>
+                <Label text="Ankunft:"/>
 
-                                <RadioButton fx:id="departureSearch"
-                                             text="Abfahrt"
-                                             selected="true"
-                                             onAction="#showNextRoutes"
-                                             toggleGroup="$arrivalOrDeparture"/>
+                <TextField fx:id="arrivalStop"
+                           onKeyTyped="#setArrivalStopSearch"
+                           promptText="Haltestelle auswählen"/>
+            </VBox>
 
-                                <RadioButton text="Ankunft"
-                                             onAction="#showNextRoutes"
-                                             toggleGroup="$arrivalOrDeparture"/>
-                            </children>
-                        </HBox>
+            <Label text="Ankunfts-/Abfahrtszeit auswählen"
+                   style="-fx-font-weight: bold; -fx-font-size: 14;"/>
 
-                        <HBox alignment="CENTER"
-                              spacing="10.0">
-                            <children>
-                                <Label text="Tag:"/>
-                                <DatePicker fx:id="selectedDate"
-                                            prefWidth="100.0"/>
-                                <Label text="HH:"/>
-                                <ComboBox fx:id="selectedHour"/>
-                                <Label text="MM"/>
-                                <ComboBox fx:id="selectedMinute"/>
-                            </children>
-                        </HBox>
-                    </children>
-                </VBox>
+            <HBox alignment="CENTER"
+                  spacing="20.0">
+                <Button text="Demnächst"
+                        prefHeight="20.0"
+                        onAction="#setNow"/>
 
-                <ListView fx:id="suggestedStops"
-                            onMouseClicked="#showNextRoutes"
-                          prefWidth="400.0"
-                          maxHeight="200.0"/>
-            </children>
-        </HBox>
-        <Label text="Gefundene Verbindungen: "
-               style="-fx-font-size: 14; -fx-font-weight: bold;"/>
-        <ListView fx:id="nextRoutes"
-                  prefWidth="900.0"
+                <fx:define>
+                    <ToggleGroup fx:id="arrivalOrDeparture"/>
+                </fx:define>
+
+                <RadioButton fx:id="departureSearch"
+                             text="Abfahrt"
+                             selected="true"
+                             onAction="#showNextRoutes"
+                             toggleGroup="$arrivalOrDeparture"/>
+
+                <RadioButton text="Ankunft"
+                             onAction="#showNextRoutes"
+                             toggleGroup="$arrivalOrDeparture"/>
+            </HBox>
+
+            <HBox alignment="CENTER"
+                  spacing="10.0">
+                <Label text="Tag:"/>
+
+                <DatePicker fx:id="selectedDate"
+                            prefWidth="100.0"/>
+
+                <Label text="HH:"/>
+
+                <ComboBox fx:id="selectedHour"/>
+
+                <Label text="MM"/>
+
+                <ComboBox fx:id="selectedMinute"/>
+            </HBox>
+        </VBox>
+
+        <ListView fx:id="suggestedStops"
+                  onMouseClicked="#showNextRoutes"
+                  prefWidth="350.0"
                   maxHeight="200.0"/>
+    </HBox>
+    <Label text="Gefundene Verbindungen: "
+           style="-fx-font-size: 14; -fx-font-weight: bold;"/>
 
-        <Button text="Zur Haltestellensuche"
-                onAction="#goToSingleStopSearch"
-                prefWidth="880.0"
-                style="-fx-font-size: 14; -fx-background-color: burlywood"/>
-    </children>
+    <!-- <ListView fx:id="nextRoutes"              prefWidth="900.0"              maxHeight="200.0"/> -->
+    <TableView fx:id="nextRoutes"
+               maxHeight="200.0"
+               maxWidth="700.0">
+        <columns>
+            <TableColumn prefWidth="100.0" text="Linie" fx:id="routeNumberColumn"/>
+            <TableColumn prefWidth="200.0" text="Richtung" fx:id="directionColumn"/>
+            <TableColumn prefWidth="200.0" text="Abfahrt" fx:id="departureTimeColumn"/>
+            <TableColumn prefWidth="200.0" text="Ankunft" fx:id="arrivalTimeColumn"/>
+        </columns>
+    </TableView>
 
+    <Button text="Zur Haltestellensuche"
+            onAction="#goToSingleStopSearch"
+            prefWidth="700.0"
+            style="-fx-font-size: 14; -fx-background-color: burlywood"/>
 </VBox>

@@ -65,14 +65,13 @@ public class TextFileManager {
         List<String> recentlyUsedStops = GuiController.getInstance().getRecentlyUsedStops();
 
         if(!recentlyUsedStops.contains(selectedStopName)) {
-            recentlyUsedStops.add(0, selectedStopName);
+            recentlyUsedStops.addFirst(selectedStopName);
 
             if (recentlyUsedStops.size() > 10) {
                 recentlyUsedStops.remove(10);
             }
 
-
-            try (FileWriter writer = new FileWriter(FILE_PATH_STOP_NAMES, StandardCharsets.UTF_8);) {
+            try (FileWriter writer = new FileWriter(FILE_PATH_STOP_NAMES, StandardCharsets.UTF_8)) {
                 for (String stopName : recentlyUsedStops) {
                     writer.write(stopName + "\n");
                 }

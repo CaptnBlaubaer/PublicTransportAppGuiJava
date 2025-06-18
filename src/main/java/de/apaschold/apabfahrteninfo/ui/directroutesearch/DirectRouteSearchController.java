@@ -2,11 +2,10 @@ package de.apaschold.apabfahrteninfo.ui.directroutesearch;
 
 import de.apaschold.apabfahrteninfo.logic.RouteHandler;
 import de.apaschold.apabfahrteninfo.logic.db.DbReader;
-import de.apaschold.apabfahrteninfo.logic.filehandling.TextFileManager;
 import de.apaschold.apabfahrteninfo.model.Route;
-import de.apaschold.apabfahrteninfo.model.StopTime;
 import de.apaschold.apabfahrteninfo.texts.AppTexts;
 import de.apaschold.apabfahrteninfo.ui.GuiController;
+import de.apaschold.apabfahrteninfo.ui.ListCellShowTwoDigits;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -21,8 +20,7 @@ import java.util.stream.IntStream;
 public class DirectRouteSearchController implements Initializable {
     //0. constants
     //endregion
-    //TODO: TABLEVIEW FÜR ROUTES
-    //TODO: ÄNDErung der ZAhlendarstellung in COmboBoxen
+
     //1. attributes
     private List<String> availableStops;
     private boolean departureActivated = true; // true for departures, false for arrivals
@@ -48,7 +46,15 @@ public class DirectRouteSearchController implements Initializable {
     private ComboBox<Integer> selectedMinute;
 
     @FXML
-    private ListView<Route> nextRoutes;
+    private TableView<Route> nextRoutes;
+    @FXML
+    private TableColumn<Route, String> routeNumberColumn;
+    @FXML
+    private TableColumn<Route, String> directionColumn;
+    @FXML
+    private TableColumn<Route, String> departureTimeColumn;
+    @FXML
+    private TableColumn<Route, String> arrivalTimeColumn;
 
     @FXML
     private RadioButton departureSearch;
@@ -59,12 +65,10 @@ public class DirectRouteSearchController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         this.availableStops = DbReader.getAllStops();
 
-        List<Integer> hours = IntStream.range(0, 24).boxed().toList();
-        this.selectedHour.getItems().setAll(hours);
-
-        List<Integer> minutes = IntStream.range(0, 60).boxed().toList();
-        this.selectedMinute.getItems().setAll(minutes);
+        setUpHourPickerAndMinutePicker();
     }
+
+
     //endregion
 
     //4. FXML methods
@@ -113,13 +117,11 @@ public class DirectRouteSearchController implements Initializable {
                         this.departureSearch.isSelected()
                 );
 
-                this.nextRoutes.getItems().setAll(foundRoutes);
-
+                populateNextRoutesTable(foundRoutes);
             } else {
                 showAlertMessageDateTimeIsDeprecated();
             }
         }
-
     }
 
     @FXML
@@ -136,6 +138,18 @@ public class DirectRouteSearchController implements Initializable {
     //endregion
 
     //5. helper methods
+    private void setUpHourPickerAndMinutePicker() {
+        List<Integer> hours = IntStream.range(0, 24).boxed().toList();
+        this.selectedHour.getItems().setAll(hours);
+        this.selectedHour.setCellFactory(_ -> new ListCellShowTwoDigits());
+        this.selectedHour.setButtonCell(new ListCellShowTwoDigits());
+
+        List<Integer> minutes = IntStream.range(0, 60).boxed().toList();
+        this.selectedMinute.getItems().setAll(minutes);
+        this.selectedMinute.setCellFactory(_ -> new ListCellShowTwoDigits());
+        this.selectedMinute.setButtonCell(new ListCellShowTwoDigits());
+    }
+
     private void showStopSuggestions() {
         String stopNameFragment = this.departureActivated ? this.departureStop.getText() : this.arrivalStop.getText();
 
@@ -158,6 +172,25 @@ public class DirectRouteSearchController implements Initializable {
                 LocalTime.of(this.selectedHour.getValue(), this.selectedMinute.getValue()));
     }
 
+    private void populateNextRoutesTable(List<Route> foundRoutes) {
+        if (!foundRoutes.isEmpty()) {
+            this.nextRoutes.getItems().addAll(foundRoutes);
+
+            this.routeNumberColumn.setCellValueFactory(data -> data.getValue().routeNumberProperty());
+            this.directionColumn.setCellValueFactory(data -> data.getValue().directionProperty());
+            this.departureTimeColumn.setCellValueFactory(data -> data.getValue().departureTimeProperty());
+            this.arrivalTimeColumn.setCellValueFactory(data -> data.getValue().arrivalTimeProperty());
+        } else {
+            showAlertMessageNoRoutesFound();
+        }
+    }
+
+    private void showAlertMessageNoRoutesFound() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(AppTexts.INFORMATION_NO_ROUTES_FOUND_TITLE);
+        alert.setContentText(AppTexts.INFORMATION_NO_ROUTES_FOUND_CONTENT);
+        alert.show();
+    }
 
     private void showAlertMessageDateTimeIsDeprecated() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -168,8 +201,8 @@ public class DirectRouteSearchController implements Initializable {
 
     private void showAlertMessageStopNameIsBlank() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Keine Haltestelle ausgewählt");
-        alert.setHeaderText("Bitte gebe eine Haltestelle in die Textfelder ein.");
+        alert.setTitle(AppTexts.ALERT_EMPTY_STOP_NAME_TITEL);
+        alert.setHeaderText(AppTexts.ALERT_EMPTY_STOP_NAME_CONTENT);
         alert.show();
     }
 }

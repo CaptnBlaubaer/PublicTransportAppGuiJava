@@ -6,6 +6,7 @@ import de.apaschold.apabfahrteninfo.logic.filehandling.TextFileManager;
 import de.apaschold.apabfahrteninfo.model.StopTime;
 import de.apaschold.apabfahrteninfo.texts.AppTexts;
 import de.apaschold.apabfahrteninfo.ui.GuiController;
+import de.apaschold.apabfahrteninfo.ui.ListCellShowTwoDigits;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -53,16 +54,12 @@ public class SingleStopController implements Initializable {
     private ComboBox<Integer> selectedMinute;
     //endregion
 
-    //initialization method
+    //3. initialization method
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.availableStops = DbReader.getAllStops();
 
-        List<Integer> hours = IntStream.range(0, 24).boxed().toList();
-        this.selectedHour.getItems().setAll(hours);
-
-        List<Integer> minutes = IntStream.range(0, 60).boxed().toList();
-        this.selectedMinute.getItems().setAll(minutes);
+        setUpHourPickerAndMinutePicker();
 
         String recentlyUsedStopSelected = GuiController.getInstance().getRecentlyUsedStop();
         if (recentlyUsedStopSelected != null) {
@@ -72,7 +69,7 @@ public class SingleStopController implements Initializable {
     }
     //endregion
 
-    //FXML-object methods
+    //4. FXML-object methods
     @FXML
     private void showNextStopTimes() {
         if (!this.searchBarForStops.getText().isBlank()) {
@@ -128,6 +125,19 @@ public class SingleStopController implements Initializable {
     }
     //endregion
 
+    //5. helper methods
+    private void setUpHourPickerAndMinutePicker() {
+        List<Integer> hours = IntStream.range(0, 24).boxed().toList();
+        this.selectedHour.getItems().setAll(hours);
+        this.selectedHour.setCellFactory(_ -> new ListCellShowTwoDigits());
+        this.selectedHour.setButtonCell(new ListCellShowTwoDigits());
+
+        List<Integer> minutes = IntStream.range(0, 60).boxed().toList();
+        this.selectedMinute.getItems().setAll(minutes);
+        this.selectedMinute.setCellFactory(_ -> new ListCellShowTwoDigits());
+        this.selectedMinute.setButtonCell(new ListCellShowTwoDigits());
+    }
+
     private LocalDateTime getChosenDateTime() {
         if (this.selectedDate.getValue() == null
                 || this.selectedHour.getValue() == null
@@ -145,11 +155,11 @@ public class SingleStopController implements Initializable {
         if (searchForDepartures.isSelected()){
             stopTimes = this.stopTimeHandler.getAllDepartures(stopName, chosenDateTime);
 
-            this.nextStopTimes.setCellFactory(param -> new DepartureTimeListViewCell());
+            this.nextStopTimes.setCellFactory(_ -> new DepartureTimeListViewCell());
         } else if (searchForArrivals.isSelected()){
             stopTimes = this.stopTimeHandler.getAllStopTimes(stopName, chosenDateTime);
 
-            this.nextStopTimes.setCellFactory(param -> new ArrivalTimeListViewCell());
+            this.nextStopTimes.setCellFactory(_ -> new ArrivalTimeListViewCell());
         }
 
         return stopTimes;
@@ -169,4 +179,5 @@ public class SingleStopController implements Initializable {
         alert.setContentText(AppTexts.ALERT_EMPTY_STOP_NAME_CONTENT);
         alert.show();
     }
+    //endregion
 }

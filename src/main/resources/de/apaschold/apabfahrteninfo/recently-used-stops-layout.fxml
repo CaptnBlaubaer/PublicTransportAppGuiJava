@@ -5,18 +5,16 @@
 
 <VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.12"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="de.apaschold.apabfahrteninfo.ui.frequentlyusedstops.RecentlyUsedStopsController">
-    <children>
-        <Label style="-fx-font-weight: bold; -fx-font-size: 20;" text="Willkommen in der Fahrplan-Applikation."/>
+      fx:controller="de.apaschold.apabfahrteninfo.ui.recentlyusedstops.RecentlyUsedStopsController">
+    <Label style="-fx-font-weight: bold; -fx-font-size: 20;" text="Willkommen in der Fahrplan-Applikation."/>
 
-        <Label style="-fx-font-size: 14;"
-               text="Wähle eine der zuletzt genutzten Haltestellen oder gehe weiter zur Suche."/>
+    <Label style="-fx-font-size: 14;"
+           text="Wähle eine der zuletzt genutzten Haltestellen oder gehe weiter zur Suche."/>
 
-        <ListView fx:id="recentlyUsedStops" maxHeight="230.0" maxWidth="380.0"
-                  onMouseClicked="#recentlyUsedStopSelected"/>
+    <ListView fx:id="recentlyUsedStops" maxHeight="230.0" maxWidth="380.0"
+              onMouseClicked="#recentlyUsedStopSelected"/>
 
-        <Button onAction="#goToSingleStopSearch" prefWidth="250.0"
-                style="-fx-font-size: 14; -fx-background-color: burlywood;"
-                text="Weiter zur Suche ohne Auswahl"/>
-    </children>
+    <Button onAction="#goToSingleStopSearch" prefWidth="250.0"
+            style="-fx-font-size: 14; -fx-background-color: burlywood;"
+            text="Weiter zur Suche ohne Auswahl"/>
 </VBox>

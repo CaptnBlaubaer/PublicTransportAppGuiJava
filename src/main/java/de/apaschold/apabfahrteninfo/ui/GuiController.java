@@ -1,12 +1,19 @@
 package de.apaschold.apabfahrteninfo.ui;
 
 import de.apaschold.apabfahrteninfo.Main;
+import de.apaschold.apabfahrteninfo.texts.AppTexts;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.util.List;
 
+/**
+ * <h2>GuiController class</h2>
+ * <li>Singleton class that manages the GUI of the application.</li>
+ * <li>Handles the opening of different views such as recently searched stops, single stop search, and direct route search.</li>
+ * <li>Stores the mainstage and a list with recently used stops as variables</li>
+ */
 public class GuiController {
     //0.constants
     //endregion
@@ -19,7 +26,8 @@ public class GuiController {
     //endregion
 
     //2. constructors
-    private GuiController() {}
+    private GuiController() {
+    }
     //endregion
 
     //3. getInstance method
@@ -49,49 +57,58 @@ public class GuiController {
     }
     //endregion
 
-    //5. setStages
+    //5. setStages and open views
     public void setMainStage(Stage mainStage) {
         this.mainStage = mainStage;
     }
 
-    public void openRecentlySearchedStops(){
+    public void openRecentlyUsedStops() {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("recently-used-stops-layout.fxml"));
 
-        try{
+        try {
             Scene scene = new Scene(fxmlLoader.load(), 550, 400);
-            this.mainStage.setTitle("Fahrplan App - Häufig genutzte Haltestellen");
+            this.mainStage.setTitle(AppTexts.RECENTLY_USED_STOPS_TITLE);
             this.mainStage.setScene(scene);
             this.mainStage.show();
         } catch (Exception e) {
-            System.err.println("Error loading frequently searched stops view: " + e.getMessage());
+            System.err.println(
+                    String.format(AppTexts.ERROR_LOADING_VIEW, AppTexts.DIRECT_ROUTE_SEARCH_TITLE)
+                            + e.getMessage()
+            );
             e.printStackTrace();
         }
     }
 
-    public void openSingleStopSearch(){
+    public void openSingleStopSearch() {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("single-stop-search-layout.fxml"));
 
-        try{
+        try {
             Scene scene = new Scene(fxmlLoader.load(), 900, 500);
-            this.mainStage.setTitle("Fahrplan App - Haltestelle suchen");
+            this.mainStage.setTitle(AppTexts.SINGLE_STOP_SEARCH_TITLE);
             this.mainStage.setScene(scene);
             this.mainStage.show();
         } catch (Exception e) {
-            System.err.println("Error loading single stop search view: " + e.getMessage());
+            System.err.println(
+                    String.format(AppTexts.ERROR_LOADING_VIEW, AppTexts.SINGLE_STOP_SEARCH_TITLE)
+                            + e.getMessage()
+            );
             e.printStackTrace();
         }
     }
 
-    public void openDirectRouteSearch(){
+    public void openDirectRouteSearch() {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("direct-route-search-layout.fxml"));
 
-        try{
-            Scene scene = new Scene(fxmlLoader.load(), 900, 550);
-            this.mainStage.setTitle("Fahrplan App - Routenplaner");
+        try {
+            Scene scene = new Scene(fxmlLoader.load(), 750, 550);
+            this.mainStage.setTitle(AppTexts.DIRECT_ROUTE_SEARCH_TITLE);
             this.mainStage.setScene(scene);
             this.mainStage.show();
         } catch (Exception e) {
-            System.err.println("Error loading route search view: " + e.getMessage());
+            System.err.println(
+                    String.format(AppTexts.ERROR_LOADING_VIEW, AppTexts.DIRECT_ROUTE_SEARCH_TITLE)
+                            + e.getMessage()
+            );
             e.printStackTrace();
         }
     }

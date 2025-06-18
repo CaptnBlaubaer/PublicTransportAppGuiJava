@@ -9,8 +9,8 @@ module de.apaschold.apabfahrteninfo {
     exports de.apaschold.apabfahrteninfo;
     exports de.apaschold.apabfahrteninfo.ui.singlestop;
     opens de.apaschold.apabfahrteninfo.ui.singlestop to javafx.fxml;
-    exports de.apaschold.apabfahrteninfo.ui.frequentlyusedstops;
-    opens de.apaschold.apabfahrteninfo.ui.frequentlyusedstops to javafx.fxml;
+    exports de.apaschold.apabfahrteninfo.ui.recentlyusedstops;
+    opens de.apaschold.apabfahrteninfo.ui.recentlyusedstops to javafx.fxml;
     exports de.apaschold.apabfahrteninfo.ui;
     opens de.apaschold.apabfahrteninfo.ui to javafx.fxml;
     exports de.apaschold.apabfahrteninfo.ui.directroutesearch;

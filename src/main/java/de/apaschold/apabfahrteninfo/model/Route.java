@@ -1,5 +1,8 @@
 package de.apaschold.apabfahrteninfo.model;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 import java.time.LocalDateTime;
 
 public record Route(String routeNumber,
@@ -11,7 +14,25 @@ public record Route(String routeNumber,
     //0. attirbute
     //endregion
 
-    //1. helper methods
+    //1. propertyGetters for TableView
+    public StringProperty routeNumberProperty() {
+        return new SimpleStringProperty(routeNumber);
+    }
+
+    public StringProperty directionProperty() {
+        return new SimpleStringProperty(direction);
+    }
+
+    public StringProperty departureTimeProperty() {
+        return new SimpleStringProperty(departureDateTime.toLocalTime().toString());
+    }
+
+    public StringProperty arrivalTimeProperty() {
+        return new SimpleStringProperty(arrivalDateTime.toLocalTime().toString());
+    }
+    //endregion
+
+    //2. helper methods
     @Override
     public String toString() {
         return routeNumber + ", " + direction + ":\n" +
@@ -31,5 +52,6 @@ public record Route(String routeNumber,
 
         return comparator;
     }
+    //endregion
 }
 
