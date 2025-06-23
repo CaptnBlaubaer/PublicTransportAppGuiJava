@@ -9,6 +9,11 @@ import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * <h2>DbWriter</h2>
+ * DbWriter is responsible for updating the database with data from text files.
+ * It reads data from text files and inserts it into the corresponding database tables.
+ */
 public class DbWriter {
     //0. constants
     private static final String AGENCIES_FILE_NAME = "agency.txt";
@@ -51,21 +56,21 @@ public class DbWriter {
     //endregion
 
     //2. constructors
-    public DbWriter() {
+    private DbWriter() {
     }
     //endregion
 
     //3. writing methods
-    public void updateAllTables(){
+    public static void updateAllTables(){
         try (Connection connection = DbManager.getInstance().getDatabaseConnection()) {
             if (connection != null) {
-                //updateAgenciesData(connection);
-                //updateRoutesData(connection);
+                updateAgenciesData(connection);
+                updateRoutesData(connection);
                 updateStopsData(connection);
-                //updateTransfersData(connection);
+                updateTransfersData(connection);
                 updateTripsData(connection);
-                //updateStopTimesData(connection);
-                //updateCalenderDatesData(connection);
+                updateStopTimesData(connection);
+                updateCalenderDatesData(connection);
             } else {
                 System.err.println("Failed to establish a database connection.");
             }
@@ -82,7 +87,7 @@ public class DbWriter {
      *
      * @param connection the database connection to use for inserting data
      */
-    private void updateAgenciesData(Connection connection){
+    private static void updateAgenciesData(Connection connection){
         clearTable(connection,AGENCIES_DB_TABLE);
 
         List<String> agenciesData = TextFileManager.getInstance().readTextFile(AGENCIES_FILE_NAME);
@@ -124,7 +129,7 @@ public class DbWriter {
      *
      * @param connection the database connection to use for inserting data
      */
-    private void updateRoutesData(Connection connection) {
+    private static void updateRoutesData(Connection connection) {
         clearTable(connection, ROUTES_DB_TABLE);
 
         List<String> routesData = TextFileManager.getInstance().readTextFile(ROUTES_FILE_NAME);
@@ -164,7 +169,7 @@ public class DbWriter {
      *
      * @param connection the database connection to use for inserting data
      */
-    private void updateStopsData(Connection connection) {
+    private static void updateStopsData(Connection connection) {
         clearTable(connection, STOPS_DB_TABLE);
 
         List<String> stopsData = TextFileManager.getInstance().readTextFile(STOPS_FILE_NAME);
@@ -216,7 +221,7 @@ public class DbWriter {
      *
      * @param connection the database connection to use for inserting data
      */
-    private void updateTransfersData(Connection connection) {
+    private static void updateTransfersData(Connection connection) {
         clearTable(connection, TRANSFERS_DB_TABLE);
 
         List<String> transfersData = TextFileManager.getInstance().readTextFile(TRANSFER_FILE_NAME);
@@ -263,7 +268,7 @@ public class DbWriter {
      *
      * @param connection the database connection to use for inserting data
      */
-    private void updateTripsData(Connection connection) {
+    private static void updateTripsData(Connection connection) {
         clearTable(connection, TRIPS_DB_TABLE);
 
         List<String> tripsData = TextFileManager.getInstance().readTextFile(TRIP_FILE_NAME);
@@ -316,7 +321,7 @@ public class DbWriter {
      *
      * @param connection the database connection to use for inserting data
      */
-    private void updateStopTimesData(Connection connection) {
+    private static void updateStopTimesData(Connection connection) {
         clearTable(connection, STOP_TIMES_DB_TABLE);
 
         List<String> stopTimesData = TextFileManager.getInstance().readTextFile(STOP_TIMES_FILE_NAME);
@@ -358,7 +363,7 @@ public class DbWriter {
      *
      * @param connection the database connection to use for inserting data
      */
-    private void updateCalenderDatesData(Connection connection) {
+    private static void updateCalenderDatesData(Connection connection) {
         clearTable(connection, CALENDAR_DATES_DB_TABLE);
 
         List<String> calendarDatesData = TextFileManager.getInstance().readTextFile(CALENDER_DATES_FILE_NAME);
@@ -394,7 +399,7 @@ public class DbWriter {
      *
      * @param connection the database connection to use for clearing the table
      */
-    private void clearTable(Connection connection, String tableName) {
+    private static void clearTable(Connection connection, String tableName) {
         String clearStatement = "DELETE FROM " + tableName;
         try (PreparedStatement preparedStatement = connection.prepareStatement(clearStatement )) {
             int rowsAffected = preparedStatement.executeUpdate();

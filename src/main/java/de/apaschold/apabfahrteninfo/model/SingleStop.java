@@ -2,10 +2,15 @@ package de.apaschold.apabfahrteninfo.model;
 
 import java.time.LocalDateTime;
 
-public record StopTime(String routeNumber,
-                       String direction,
-                       LocalDateTime arrivalDateTime,
-                       LocalDateTime departureDateTime) implements Comparable<StopTime> {
+/**
+ * <h2>SingleStop record class</h2>
+ * Represents a single stop with its route number, direction, and arrival/departure times.
+ * Implements Comparable to allow sorting based on departure time.
+ */
+public record SingleStop(String routeNumber,
+                         String direction,
+                         LocalDateTime arrivalDateTime,
+                         LocalDateTime departureDateTime) implements Comparable<SingleStop> {
     //0. constants
     private static final String STRING_REPRESENTATION = "%s, %s: %s";
     //endregion
@@ -28,7 +33,7 @@ public record StopTime(String routeNumber,
     }
 
     @Override
-    public int compareTo(StopTime otherDeparture){
+    public int compareTo(SingleStop otherDeparture){
         int comparator = 0;
 
         if (departureDateTime.isBefore(otherDeparture.departureDateTime())){

@@ -1,17 +1,23 @@
 package de.apaschold.apabfahrteninfo.ui.singlestop;
 
-import de.apaschold.apabfahrteninfo.model.StopTime;
+import de.apaschold.apabfahrteninfo.model.SingleStop;
 import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 
-public class ArrivalTimeListViewCell extends ListCell<StopTime> {
+/**
+ * <h2>ArrivalTimeListViewCell class</h2>
+ * <li>Custom {@link ListCell} for displaying the arrival time of a {@link SingleStop} in a {@link ListView}.</li>
+ * <li>Calls the arrivalAsString method from the {@link SingleStop}</li>
+ */
+public class ArrivalTimeListViewCell extends ListCell<SingleStop> {
     @Override
-    protected void updateItem(StopTime stopTime, boolean empty){
-        super.updateItem(stopTime,empty);
+    protected void updateItem(SingleStop singleStop, boolean empty){
+        super.updateItem(singleStop,empty);
 
-        if(empty|| stopTime == null){
+        if(empty|| singleStop == null){
             setText(null);
         } else {
-            setText(stopTime.arrivalAsString());
+            setText(singleStop.arrivalAsString());
         }
     }
 }

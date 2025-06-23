@@ -5,6 +5,14 @@ import javafx.beans.property.StringProperty;
 
 import java.time.LocalDateTime;
 
+/**
+ * <h2> Route class</h2>
+ * Represents a public transport route with details such as route number, direction,
+ * departure and arrival stops, and their respective date and time.
+ * <li>Property getters to populate TableView</li>
+ * <li>Implements Comparable to allow sorting based on arrival time</li>
+ */
+
 public record Route(String routeNumber,
                     String direction,
                     String departureStop,

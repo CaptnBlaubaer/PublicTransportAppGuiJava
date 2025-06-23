@@ -17,6 +17,11 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.IntStream;
 
+/**
+ * <h2>DirectRouteSearchController class</h2>
+ * <li>Controller for the direct route search view.</li>
+ * <li>Handles user input and displays next connections between two chosen stops for chosen date and time</li>
+ */
 public class DirectRouteSearchController implements Initializable {
     //0. constants
     //endregion
@@ -61,17 +66,26 @@ public class DirectRouteSearchController implements Initializable {
     //endregion
 
     //3. initialization method
+    /**
+     * <h2>initialize method</h2>
+     * <li>Loading list of available stops from database with {@link DbReader}</li>
+     * <li>Sets the hour and minute pickers ({@link ComboBox}-objects)</li>
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.availableStops = DbReader.getAllStops();
 
         setUpHourPickerAndMinutePicker();
     }
-
-
     //endregion
 
     //4. FXML methods
+
+    /**
+     * <h2>setDepartureStopSearch method</h2>
+     * <li>Assigns the {@link ListView} to display the suggested stops for the departure {@link TextField}</li>
+     * <li>Calls the method to show stop suggestions for {@link TextField} input</li>
+     */
     @FXML
     private void setDepartureStopSearch() {
         if (!this.departureActivated) {
@@ -80,6 +94,11 @@ public class DirectRouteSearchController implements Initializable {
         showStopSuggestions();
     }
 
+    /**
+     * <h2>setDepartureStopSearch method</h2>
+     * <li>Assigns the {@link ListView} to display the suggested stops for the arrival {@link TextField}</li>
+     * <li>Calls the method to show stop suggestions for {@link TextField} input</li>
+     */
     @FXML
     private void setArrivalStopSearch() {
         if (this.departureActivated) {
@@ -88,6 +107,14 @@ public class DirectRouteSearchController implements Initializable {
         showStopSuggestions();
     }
 
+    /**
+     * <h2>showNextRoutes method</h2>
+     * <li>Called either by the {@link ListView} containing the suggested stops onClick</li>
+     * <li>Assigns the {@link ListView} value to the respective {@link TextField}</li>
+     * <li>Checks if the chosen date and time is in the future, otherwise shows an alert message</li>
+     * <li>Calls the {@link RouteHandler} to find routes between the two stops for the chosen date and time</li>
+     * <li>Populates the {@link TableView} with the found routes</li>
+     */
     @FXML
     private void showNextRoutes() {
         String selectedStop = this.suggestedStops.getSelectionModel().getSelectedItem();
@@ -124,6 +151,10 @@ public class DirectRouteSearchController implements Initializable {
         }
     }
 
+    /**
+     * <h2>setNow method</h2>
+     * <li>Sets the  {@link DatePicker} and the time picker {@link ComboBox} to the current date and time.</li>
+     */
     @FXML
     private void setNow() {
         this.selectedDate.setValue(LocalDateTime.now().toLocalDate());
@@ -138,6 +169,11 @@ public class DirectRouteSearchController implements Initializable {
     //endregion
 
     //5. helper methods
+    /**
+     * <h2>setUpHourPickerAndMinutePicker method</h2>
+     * <li>Sets up the hour and minute pickers with values from 0 to 23 for hours and 0 to 59 for minutes.</li>
+     * <li>Uses a custom {@link ListCellShowTwoDigits} to display the values in two-digit format.</li>
+     */
     private void setUpHourPickerAndMinutePicker() {
         List<Integer> hours = IntStream.range(0, 24).boxed().toList();
         this.selectedHour.getItems().setAll(hours);
@@ -150,6 +186,12 @@ public class DirectRouteSearchController implements Initializable {
         this.selectedMinute.setButtonCell(new ListCellShowTwoDigits());
     }
 
+    /**
+     * <h2>showStopSuggestions method</h2>
+     * <li>Bound to the search bar "onKeyTyped"</li>
+     * <li>Filters the list of available stops based on the text entered in the search bar.</li>
+     * <li>Updates the stop suggestions {@link ListView} with the filtered results.</li>
+     */
     private void showStopSuggestions() {
         String stopNameFragment = this.departureActivated ? this.departureStop.getText() : this.arrivalStop.getText();
 
@@ -160,6 +202,12 @@ public class DirectRouteSearchController implements Initializable {
         this.suggestedStops.getItems().setAll(suggestions);
     }
 
+    /**
+     * <h2>getChosenDateTime method</h2>
+     * <li>Retrieves the selected date, hour, and minute from the UI components.</li>
+     * <li>If any of these values are null, it sets the current date and time.</li>
+     * @return {@link LocalDateTime} object representing the chosen date and time.
+     */
     private LocalDateTime getChosenDateTime() {
         if (this.selectedDate.getValue() == null
                 || this.selectedHour.getValue() == null
@@ -172,6 +220,12 @@ public class DirectRouteSearchController implements Initializable {
                 LocalTime.of(this.selectedHour.getValue(), this.selectedMinute.getValue()));
     }
 
+    /**
+     * <h2>populateNextRoutesTable method</h2>
+     * <li>Populates the {@link TableView} with the found routes.</li>
+     * <li>If no routes are found, it shows an alert message.</li>
+     * @param foundRoutes List of {@link Route} objects to be displayed in the table.
+     */
     private void populateNextRoutesTable(List<Route> foundRoutes) {
         if (!foundRoutes.isEmpty()) {
             this.nextRoutes.getItems().addAll(foundRoutes);

@@ -5,6 +5,11 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.SQLNonTransientConnectionException;
 
+/**
+ * <h2>DbManager</h2>
+ * A singleton class that manages the connection to the local database.
+ * It provides a method to get a connection to the database.
+ */
 public class DbManager {
     //0. constants
     private static final String DB_LOCAL_SERVER_IP_ADDRESS = "localhost/";
@@ -36,6 +41,13 @@ public class DbManager {
     //endregion
 
     //4. read and write connection to database
+    /**
+     * Gets a connection to the local database.
+     * First, it attempts to establish a connection and then closes it immediately, to check if the database is reachable.
+     *
+     * @return a Connection object to the database
+     * @throws SQLException if a database access error occurs
+     */
     public Connection getDatabaseConnection() throws SQLException {
         Connection connection = null;
 
