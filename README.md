@@ -1,5 +1,7 @@
 The application is a project that provides information about the public transport system in the MDV region (Mitteldeutscher Verkehrsbund).
-It uses publicly available data from: https://www.mdv.de/site/uploads/mdv_gtfs.zip
+It uses publicly available data from: https://www.mdv.de/site/uploads/mdv_gtfs.zip.
+
+In a second version, the application is split into two parts: One contains the database logic and provides a REST api created with Spring to retrieve the data, while the other represents the GUI and uses REST requests.
 
 The application has a JavaFx GUI that offers the possibility to search for information about a direct route between two stops for a specific time (default is the current time) 
 or to get departure/arrival information for a single stop.
