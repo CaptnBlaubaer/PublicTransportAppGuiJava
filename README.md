@@ -9,8 +9,6 @@ In a second version, the application is split into two parts: One contains the d
 The .zip file has to be unpacked into the project directory .../src/main/resources/en/apaschold/apabfahrteninfo/data.
 The data is stored in an SQL database using the following SQL statements to create the database.
 
-Translated with DeepL.com (free version)
-
 CREATE TABLE `agencies` (
   `agency_id` varchar(6) PRIMARY KEY,
   `agency_name` text NOT NULL,
