@@ -6,8 +6,8 @@ or to get departure/arrival information for a single stop.
 
 In a second version, the application is split into two parts: One contains the database logic and provides a REST api created with Spring to retrieve the data (https://github.com/CaptnBlaubaer/PublicTransportAppRestApiSpring), while the other represents the GUI and uses REST requests (https://github.com/CaptnBlaubaer/PublicTransportAppRestGuiJava).
 
-The .zip file must be unpacked into the project directory .../src/main/resources/en/apaschold/apabfahrteninfo/data.
-The data is stored in an SQL database using the following SQL statements to build the database.
+The .zip file has to be unpacked into the project directory .../src/main/resources/en/apaschold/apabfahrteninfo/data.
+The data is stored in an SQL database using the following SQL statements to create the database.
 
 Translated with DeepL.com (free version)
 
